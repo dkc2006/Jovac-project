@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rating Page</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f7f7f7;
+        font-family: Arial, sans-serif;
+      }
+
+      .rating-container {
+        text-align: center;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      .stars {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .stars input {
+        display: none;
+      }
+
+      .stars label {
+        font-size: 40px;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+
+      .stars input:checked ~ label,
+      .stars input:hover ~ label,
+      .stars label:hover ~ label {
+        color: #ffcc00;
+      }
+
+      .submit-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .submit-btn:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="rating-container">
+      <h1>Rate Us</h1>
+      <div class="stars">
+        <input type="radio" id="star5" name="rating" value="5" />
+        <label for="star5" class="star">&#9733;</label>
+
+        <input type="radio" id="star4" name="rating" value="4" />
+        <label for="star4" class="star">&#9733;</label>
+
+        <input type="radio" id="star3" name="rating" value="3" />
+        <label for="star3" class="star">&#9733;</label>
+
+        <input type="radio" id="star2" name="rating" value="2" />
+        <label for="star2" class="star">&#9733;</label>
+
+        <input type="radio" id="star1" name="rating" value="1" />
+        <label for="star1" class="star">&#9733;</label>
+      </div>
+
+      <button class="submit-btn">
+        <a href="index.html" style="text-decoration: none">Submit Rating</a>
+      </button>
+    </div>
+  </body>
+</html>

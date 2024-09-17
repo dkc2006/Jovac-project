@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adventure Booking</title>
+<style>
+    /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #83a4d4, #b6fbff);
+    color: #333;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  /* Container for the booking form */
+  .container {
+    background: white;
+    padding: 30px 40px;
+    margin-left: -10rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 580px;
+    text-align: center;
+  }
+  
+  /* Form Section */
+  .booking-form h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    text-transform: uppercase;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Label Styling */
+  label {
+    margin: 10px 0 5px;
+    font-size: 14px;
+    color: #555;
+    text-align: left;
+  }
+  
+  /* Input and Select Styling */
+  input[type="text"],
+  input[type="date"],
+  input[type="number"],
+  select {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    width: 100%;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  input[type="text"]:focus,
+  input[type="date"]:focus,
+  input[type="number"]:focus,
+  select:focus {
+    border-color: #83a4d4;
+  }
+  
+  select {
+    appearance: none;
+    background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="#333" d="M2 0L0 2h4z"/></svg>') no-repeat right 10px center;
+    background-color: white;
+    padding-right: 40px;
+  }
+  
+  /* Button Styling */
+  .btn {
+    background-color: #83a4d4;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+  }
+  
+  .btn:hover {
+    background-color: #6a8bbf;
+  }
+  
+  .submit-btn a {
+    color: white;
+    display: block;
+    text-decoration: none;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+  
+    h2 {
+        font-size: 20px;
+    }
+  }
+  
+  /* Footer Section */
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  footer p {
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+    <br>
+    <section class="booking-form">
+      <div class="container">
+        <h2>Book Your Trip</h2>
+        <form action="#">
+          <label for="trip">Select Trip</label>
+          <select id="trip" name="trip">
+            <option value=""> Choose Your Trip</option>
+            <option value="switzerland">Switzerland Adventure</option>
+            <option value="lakeside">Lakeside Retreat</option>
+            <option value="ladakh">Forest Hideout</option>
+            <option value="ladakh">Desert Oasis</option>
+            <option value="ladakh">Ladakh Adventure</option>
+            <option value="ladakh">Beachside Escape</option>
+            <option value="ladakh">Hilltop Camp</option>
+            <option value="ladakh">Valley Retreat</option>
+          </select>
+
+          <label for="date">Select Date</label>
+          <input type="date" id="date" name="date">
+
+          <label for="participants">Number of Participants</label>
+          <input type="number" id="participants" name="participants" min="1" max="10" placeholder="1">
+
+          <label for="contact">Contact Information</label>
+          <input type="text" id="contact" name="contact" placeholder="Your Email or Phone">
+
+          <button type="submit" class="btn submit-btn"><a style="text-decoration: none;" href="review.html">Book Now</a></button>
+        </form>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

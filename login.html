@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Form</title>
+    <style>
+      /* Global Styles */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      /* Login Modal Content Styles */
+      .login-modal-content {
+        width: 300px;
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .close {
+        float: right;
+        font-size: 24px;
+        cursor: pointer;
+        color: #aaa;
+      }
+      .close:hover {
+        color: #666;
+      }
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        height: 40px;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      input[type="text"]:focus,
+      input[type="password"]:focus {
+        border-color: #aaa;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .login-btn,
+      .facebook-login {
+        width: 100%;
+        height: 40px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: rgb(90, 90, 238);
+        color: #fff;
+        cursor: pointer;
+      }
+      .login-btn:hover,
+      .facebook-login:hover {
+        background-color: blue;
+      }
+      .or {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 16px;
+        color: #aaa;
+      }
+      .forgot-password {
+        text-decoration: none;
+        color: rgb(90, 90, 238);
+      }
+      .forgot-password:hover {
+        color: blue;
+      }
+      .signup-section {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .signup-link {
+        text-decoration: none;
+        color: rgb(90, 90, 238);
+      }
+      .signup-link:hover {
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-modal-content">
+      <h2><strong>Login</strong></h2>
+      <span class="close" id="closeModal">&times;</span>
+      <form id="loginForm" method="POST">
+        <input
+          type="text"
+          name="email"
+          placeholder="Phone number, username, or email"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        <button type="submit" class="login-btn">Log in</button>
+      </form>
+      <div class="or">-------------------OR--------------------</div>
+      <button class="facebook-login">Log in with Facebook</button>
+      <a href="#" class="forgot-password">Forgot password?</a>
+      <div class="signup-section">
+        <span>Don't have an account?</span>
+        <a href="/register" class="signup-link">Sign up</a>
+      </div>
+    </div>
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          const response = await fetch("/login", {
+            method: "POST",
+            body: formData,
+          });
+          const result = await response.json();
+          alert(result.message);
+        });
+
+      // Get the modal content element
+      const modalContent = document.querySelector(".login-modal-content");
+
+      // Get the close button element
+      const closeModalBtn = document.querySelector("#closeModal");
+
+      // Add an event listener to the close button
+      closeModalBtn.addEventListener("click", () => {
+        // Hide the modal content when the close button is clicked
+        modalContent.style.display = "none";
+      });
+    </script>
+  </body>
+</html>
