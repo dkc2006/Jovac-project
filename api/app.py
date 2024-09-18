@@ -1,78 +1,125 @@
-import os
-from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory 
+from datetime import datetime, timedelta
+from flask import Flask, render_template, request, jsonify
 from flask_pymongo import PyMongo
-from db import mdb
 from werkzeug.security import generate_password_hash, check_password_hash
+import jwt
 
-# Get the parent directory of the current file
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Create the Flask app with the correct template folder
-app = Flask(__name__, template_folder=parent_dir)
-
-# Configure static files to be served from the parent directory
-app.static_folder = parent_dir
-
-# app.config["MONGO_URI"] = "mongodb://localhost:27017/"
+app = Flask(__name__)
+app.config["MONGO_URI"] = "mongodb://localhost:27017/mydatabase"
+app.config['SECRET_KEY'] = 'secret-key'
 
 mongo = PyMongo(app)
 
-@app.route('/')
-def home():
-    return redirect(url_for('login'))
+class User:
+    def __init__(self, name, email, password, firstname, lastname, phone, dob, gender, aboutme):
+        self.name = name
+        self.email = email
+        self.password = password
+        self.firstname = firstname
+        self.lastname = lastname
+        self.phone = phone
+        self.dob = dob
+        self.gender = gender
+        self.aboutme = aboutme
 
-@app.route('/login', methods=['GET', 'POST'])
+    def save(self):
+        mongo.db.users.insert_one({
+            'name': self.name,
+            'email': self.email,
+            'password': self.password,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'phone': self.phone,
+            'dob': self.dob,
+            'gender': self.gender,
+            'aboutme': self.aboutme
+        })
+
+    @staticmethod
+    def find_by_email(email):
+        return mongo.db.users.find_one({'email': email})
+
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        users = mongo.db.users
-        login_user = users.find_one({'email': request.form['email']})
+    # if not request.is_json:
+        # return jsonify({'error': 'Content-Type must be application/json'}), 400
 
-        if login_user:
-            if check_password_hash(login_user['password'], request.form['password']):
-                return jsonify({'message': 'Login successful!'}), 200
-        return jsonify({'message': 'Invalid email or password'}), 401
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
 
-    return render_template('login.html')
+    if not email or not password:
+        return jsonify({'error': 'Missing email or password'}), 400
 
-@app.route('/register', methods=['GET', 'POST'])
+    try:
+        # Find user by email
+        user_data = User.find_by_email(email)
+
+        # If user not found, return error
+        if not user_data:
+            return jsonify({'error': 'Invalid email or password'}), 401
+
+        # Compare password with hashed password
+        if not check_password_hash(user_data.get('password', ''), password):
+            return jsonify({'error': 'Invalid email or password'}), 401
+
+        # Generate JWT token with expiration
+        expiration = datetime.utcnow() + timedelta(hours=1)
+        payload = {
+            'user_id': str(user_data['_id']),
+            'exp': expiration
+        }
+
+        token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
+
+        # Return token and user data
+        return jsonify({'token': token, 'user': user_data}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/register', methods=['POST'])
 def register():
-    if request.method == 'POST':
-       
-        existing_user = mdb.find_one({'email': request.form['email']})
+    try:
+        data = request.get_json()
 
-        if existing_user is None:
-            hashpass = generate_password_hash(request.form['password'])
-            mdb.insert_one({
-                'firstname': request.form['firstname'],
-                'lastname': request.form['lastname'],
-                # 'email': request.form['email'],
-                # 'password': hashpass,
-                # 'phone': request.form['phone'],
-                # 'dob': request.form['dob'],
-                # 'gender': request.form['gender'],
-                # 'hobbies': request.form.getlist('hobbies'),
-                # 'address': {
-                #     'housenumber': request.form['housenumber'],
-                #     'street': request.form['street'],
-                #     'city': request.form['city'],
-                #     'state': request.form['state'],
-                #     'country': request.form['country'],
-                #     'pincode': request.form['pincode']
-                # },
-                # 'aboutme': request.form['aboutme']
-            })
-            return jsonify({'message': 'Registration successful!'}), 201
-        return jsonify({'message': 'Email already exists!'}), 400
+        # Check for existing user
+        existing_user = User.find_by_email(data.get('email'))
+        if existing_user:
+            return jsonify({'error': 'Email already registered'}), 400
 
+        # Get user data from request body
+        name = data.get('name')
+        email = data.get('email')
+        password = data.get('password')
+        firstname = data.get('firstname')
+        lastname = data.get('lastname')
+        phone = data.get('phone')
+        dob = data.get('dob')
+        gender = data.get('gender')
+        aboutme = data.get('aboutme')
+
+        if not all([name, email, password, firstname, lastname, phone, dob, gender, aboutme]):
+            return jsonify({'error': 'All fields are required'}), 400
+
+        # Hash password
+        hashed_password = generate_password_hash(password)
+
+        # Create new user
+        user = User(name, email, hashed_password, firstname, lastname, phone, dob, gender, aboutme)
+
+        # Save user to database
+        user.save()
+
+        # Return success message
+        return jsonify({'message': 'User created successfully'}), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/register', methods=['GET'])
+def render_register():
     return render_template('register.html')
 
-@app.route('/booking', methods=['GET'])
-def booking():
-    return render_template('booking.html')
-
-@app.route('/<path:filename>')
-def serve_static(filename):
-    return send_from_directory(app.static_folder, filename)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)

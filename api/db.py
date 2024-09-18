@@ -1,8 +1,7 @@
-from pymongo import MongoClient
+# from flask_pymongo import PyMongo
 
-client = MongoClient("mongodb://localhost:27017/")
-print('client', client)
-
-mdb = client.a2
-# mdb = client['a2]
-print('mdb', mdb)
+# # This function will initialize the MongoDB connection
+# def init_db(app):
+#     app.config["MONGO_URI"] = 'mongodb://localhost:27017/users'
+#     mongo = PyMongo(app)
+#     return mongo
