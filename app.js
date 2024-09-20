@@ -24,6 +24,35 @@ function backToTop() {
 
 // for login model
 
+const searchInput = document.getElementById("search-input");
+const boxes = document.querySelectorAll(".box");
+
+// Function to filter and sort trip cards
+function filterAndSortTrips() {
+  const searchTerm = searchInput.value.toLowerCase();
+  const sortedBoxes = Array.from(boxes).sort((a, b) => {
+    const nameA = a.querySelector(".place_name").innerText.toLowerCase();
+    const nameB = b.querySelector(".place_name").innerText.toLowerCase();
+    return nameA.localeCompare(nameB);
+  });
+
+  sortedBoxes.forEach((box) => {
+    const placeName = box.querySelector(".place_name").innerText.toLowerCase();
+    // Filter based on search term
+    if (placeName.includes(searchTerm)) {
+      box.style.display = "block"; // Show matching boxes
+    } else {
+      box.style.display = "none"; // Hide non-matching boxes
+    }
+  });
+}
+
+// Event listener for input change
+searchInput.addEventListener("input", filterAndSortTrips);
+
+// Initial sorting on page load
+filterAndSortTrips();
+
 // document.addEventListener("DOMContentLoaded", function () {
 //   // Login Button Interaction
 //   const loginBtn = document.querySelector(".nav-singin p");
