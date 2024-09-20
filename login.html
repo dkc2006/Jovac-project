@@ -116,7 +116,7 @@
       <a href="#" class="forgot-password">Forgot password?</a>
       <div class="signup-section">
         <span>Don't have an account?</span>
-        <a href="/register" class="signup-link">Sign up</a>
+        <a href="./api/templates/register.html" class="signup-link">Sign up</a>
       </div>
     </div>
     <script>
@@ -124,24 +124,46 @@
         .getElementById("loginForm")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
+
+          // Create an object from the form data
           const formData = new FormData(e.target);
-          const response = await fetch("/login", {
-            method: "POST",
-            body: formData,
-          });
-          const result = await response.json();
-          alert(result.message);
+          const data = {
+            email: formData.get("email"),
+            password: formData.get("password"),
+          };
+
+          try {
+            // Send a POST request to the /login endpoint
+            const response = await fetch("/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            });
+
+            // Get the JSON response
+            const result = await response.json();
+
+            if (response.ok) {
+              // If login is successful, alert the user or redirect
+              alert("Login successful");
+              console.log(result.token); // Store the token if needed
+            } else {
+              // Handle errors
+              alert(result.error);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again.");
+          }
         });
 
-      // Get the modal content element
+      // Close the modal
       const modalContent = document.querySelector(".login-modal-content");
-
-      // Get the close button element
       const closeModalBtn = document.querySelector("#closeModal");
 
-      // Add an event listener to the close button
       closeModalBtn.addEventListener("click", () => {
-        // Hide the modal content when the close button is clicked
         modalContent.style.display = "none";
       });
     </script>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Registration Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        padding: 20px;
+      }
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+      form {
+        background-color: #fff;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      fieldset {
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+      }
+      legend {
+        font-weight: bold;
+        color: #333;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="date"],
+      select,
+      textarea {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      input[type="tel"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+        transition: border-color 0.3s;
+      }
+      input[type="tel"]:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+      input[type="checkbox"] {
+        margin-right: 5px;
+      }
+      input[type="checkbox"] + label {
+        display: inline;
+        margin-right: 15px;
+        font-size: 14px;
+        color: #555;
+      }
+      input[type="submit"],
+      button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      input[type="submit"]:hover,
+      button:hover {
+        background-color: #0056b3;
+      }
+      select {
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Register Form</h2>
+    <form id="registerForm">
+      <fieldset>
+        <legend>Personal Information</legend>
+        <label for="firstname">First Name:</label>
+        <input
+          type="text"
+          id="firstname"
+          name="firstname"
+          required
+          autocomplete="given-name"
+        />
+
+        <label for="middlename">Middle Name:</label>
+        <input
+          type="text"
+          id="middlename"
+          name="middlename"
+          autocomplete="additional-name"
+        />
+
+        <label for="lastname">Last Name:</label>
+        <input
+          type="text"
+          id="lastname"
+          name="lastname"
+          required
+          autocomplete="family-name"
+        />
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel" />
+
+        <label for="email">Email ID:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          autocomplete="email"
+        />
+
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          autocomplete="new-password"
+        />
+
+        <label for="confirmpassword">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirmpassword"
+          name="confirmpassword"
+          required
+          autocomplete="new-password"
+        />
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required autocomplete="bday" />
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="">Select</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="aboutme">About Me:</label>
+        <textarea
+          id="aboutme"
+          name="aboutme"
+          rows="5"
+          cols="40"
+          maxlength="500"
+          required
+        ></textarea>
+
+        <input type="submit" value="Submit" />
+      </fieldset>
+    </form>
+
+    <script>
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault(); // Prevent the form from submitting the default way
+
+          const formData = new FormData(e.target);
+          const data = Object.fromEntries(formData.entries()); // Convert form data to JSON
+
+          // Check if password and confirm password match
+          if (data.password !== data.confirmpassword) {
+            alert("Passwords do not match!");
+            return;
+          }
+
+          try {
+            const response = await fetch("http://127.0.0.1:5000/register", {
+              // Flask backend port
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data), // Send JSON data to backend
+            });
+
+            // Handle non-OK response from the server
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.error || "Registration failed.");
+            }
+
+            const result = await response.json();
+            alert(result.message || "Registration successful");
+          } catch (error) {
+            alert(`Registration failed: ${error.message}`);
+          }
+        });
+    </script>
+  </body>
+</html>
