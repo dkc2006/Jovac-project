@@ -4,8 +4,11 @@ from flask_pymongo import PyMongo
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from bson import ObjectId
+from flask_cors import CORS  # Import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes and origins
+
 app.config["MONGO_URI"] = "mongodb://localhost:27017/mydatabase"
 app.config['SECRET_KEY'] = 'secret-key'
 
@@ -45,6 +48,7 @@ class User:
 def index():
     return 'Welcome to The Camping Adventure App'
 
+
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -76,6 +80,7 @@ def login():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -110,9 +115,11 @@ def register():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/register', methods=['GET'])
 def render_register():
     return render_template('register.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
