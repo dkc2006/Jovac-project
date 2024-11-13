@@ -12,6 +12,8 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    
+    
   </head>
 
   <body>
@@ -45,10 +47,21 @@
           </div>
         </div>
 
-        <div class="nav-singin border">
-          <a href="./api/templates/register.html"> <p><span>Hello, sign up</span></p></a>
-          <a href="./api/login.html"><p class="nav-second">& Log in</p></a>
-        </div>
+        <!-- Login/Register Links -->
+<div class="nav-auth border" id="authLinks">
+  <a href="./api/templates/register.html"><p><span>Hello, sign up</span></p></a>
+  <a href="./api/login.html"><p class="nav-second">& Log in</p></a>
+</div>
+
+<!-- Profile Button with Dropdown -->
+<div class="nav-profile border" id="profileDropdownContainer" style="display: none; position: relative;">
+  <button class="profile-button" id="profileButton">Profile ▼</button>
+  <div class="dropdown-content" id="dropdownMenu" style="display: none;">
+    <a href="./api/profile.html">View Profile</a>
+    <a href="#" id="logoutOption">Logout</a>
+  </div>
+</div>
+
         <div class="nav-return border">
           <a href="./booking.html"><p><span><b>Booking</b></span></p></a>
           <a href="./booking.html"><p class="nav-second">& Review</p></a>
@@ -75,10 +88,20 @@
       </div>
     </header>
     <div class="hero-section">
-      <div class="hero-massage">
-       
+      <div class="carousel">
+          <div class="carousel-images">
+              <img src="bike2.jpg" class="carousel-image active" alt="First slide">
+              <img src="https://rezkit-tour-images.b-cdn.net/01h7ywwd7at70t98wdj69emng5/images/01J87PXDKSGQS4AZEXHNWP11EC.jpg?width=820&height=400&crop=2688%2C1311%2C524%2C3&aspect_ratio=820%3A400&auto=format%2Ccompress&fmt=webp&width=720&w=1200" class="carousel-image" alt="Second slide">
+              <img src="https://images.thequint.com/thequint%2F2018-08%2Fcdfdeff8-ba46-4497-9141-5556e450ad75%2F87464085_fc1b_47f5_a562_8af5f620dc80.jpg?rect=0%2C0%2C1024%2C576&auto=format%2Ccompress&fmt=webp&width=720&w=1200" class="carousel-image" alt="Third slide">
+          </div>
+          <button class="carousel-button prev" onclick="changeSlide(-1)">&#10094;</button>
+          <button class="carousel-button next" onclick="changeSlide(1)">&#10095;</button>
+          <div class="carousel-caption">
+              <h5 id="carousel-caption-title">Adventure Awaits</h5>
+              <p id="carousel-caption-text">Join us for an unforgettable journey.</p>
+          </div>
       </div>
-    </div>
+  </div>
     <div class="shop-section">
       <div class="box">
         <div class="box-content">
@@ -103,7 +126,7 @@
             >Save
             <div class="productCard_discountTagAmount__9R5ID">INR 33,100</div>
           </div>
-          <div class="box-img"><a href="booking.html">
+          <div class="box-img"><a class="conditionalLink" href="#">
             <img src="camp0.jpg" alt="Description of Image" style="height: 250px;
             width:100%;
             background-size: cover;
@@ -142,7 +165,7 @@
             >Save
             <div class="productCard_discountTagAmount__9R5ID">INR 15,000</div>
           </div>
-          <div class="box-img"><a href="booking.html">
+          <div class="box-img"><a class="conditionalLink" href="#">
             <img src="camp2.jpg" alt="Description of Image" style="height: 270px;
             width:100%;
             background-size: cover;
@@ -180,7 +203,7 @@
             >Save
             <div class="productCard_discountTagAmount__9R5ID">INR 8,100</div>
           </div>
-          <div class="box-img"><a href="booking.html">
+          <div class="box-img"><a class="conditionalLink" href="#">
   <img src="camp3.jpg" alt="Description of Image" style="height: 250px;
   width:100%;
   background-size: cover;
@@ -249,7 +272,7 @@
             >Save
             <div class="productCard_discountTagAmount__9R5ID">INR 7,999</div>
           </div>
-          <div class="box-img" ><a href="booking.html">
+          <div class="box-img" ><a class="conditionalLink" href="#">
             <img src="camp5.jpg" alt="Description of Image" style="height: 280px; width: 100%;
             background-size: cover;
             margin-top: 1rem;
@@ -286,7 +309,7 @@
             >Save
             <div class="productCard_discountTagAmount__9R5ID">INR 2,400</div>
           </div>
-          <div class="box-img" ><a href="booking.html">
+          <div class="box-img" ><a class="conditionalLink" href="#">
             <img src="camp6.jpg" alt="Description of Image" style="height: 250px;
             width: 100%;
             background-size: cover;
@@ -324,7 +347,7 @@
             >Save
             <div class="productCard_discountTagAmount__9R5ID">INR 38,071</div>
           </div>
-          <div class="box-img"><a href="booking.html">
+          <div class="box-img"><a class="conditionalLink" href="#">
   <img src="camp7.jpg" alt="Description of Image" style="height: 250px;
   width: 100%;
   background-size: cover;
@@ -441,10 +464,57 @@
         </div>
       </div>
     </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("token");
+        const linkElements = document.querySelectorAll(".conditionalLink");
+
+    // Loop through all elements with the 'conditionalLink' class
+    linkElements.forEach(link => {
+      if (token) {
+        // User is logged in, set link to booking page
+        link.setAttribute("href", "booking.html");
+      } else {
+        // User is not logged in, set link to login page
+        link.setAttribute("href", "api/login.html");
+      }
+    });
+    
+        if (token) {
+          // User is logged in, show the profile button with dropdown
+          document.getElementById("authLinks").style.display = "none";
+          document.getElementById("profileDropdownContainer").style.display = "block";
+        } else {
+          // User is not logged in, show the login/register links
+          document.getElementById("authLinks").style.display = "block";
+        }
+    
+        // Toggle the dropdown menu display on button click
+        const profileButton = document.getElementById("profileButton");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+    
+        profileButton.addEventListener("click", () => {
+          dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+        });
+    
+        // Close the dropdown when clicking outside of it
+        window.addEventListener("click", (e) => {
+          if (!e.target.closest("#profileDropdownContainer")) {
+            dropdownMenu.style.display = "none";
+          }
+        });
+    
+        // Handle logout option click
+        document.getElementById("logoutOption").addEventListener("click", () => {
+          localStorage.removeItem("token"); // Remove token from localStorage
+          window.location.reload(); // Reload the page to update the UI
+        });
+      });
+    </script>
 
     <script src="app.js"></script>
 </head>
 <body>
   
   </body>
-</html>
+</html>..L

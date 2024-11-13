@@ -1,5 +1,6 @@
 * {
     margin: 0;
+    padding: 0;
     font-family: sans-serif;
     border: border-box;
 }
@@ -10,7 +11,9 @@
     color: rgb(255, 255, 255);
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between; /* Changed to space-between for better spacing */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    padding: 0 10px; /* Added padding for spacing */
 }
 
 .nav-logo {
@@ -142,14 +145,63 @@ span {
 
 /* hero section */
 .hero-section {
-    background-image: url(bike2.jpg);
-    height: 500px;
-    background-size: cover;
+    position: relative;
+    height: 500px; /* Adjust height as needed */
+    overflow: hidden; /* Hide overflow */
+}
+
+.carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-images {
     display: flex;
+    transition: transform 0.5s ease-in-out; /* Smooth transition */
+}
 
-    justify-content: center;
-    align-items: flex-end;
+.carousel-image {
+    
+    min-width: 100%; /* Each image takes full width */
+    height: 100%; /* Full height */
+    object-fit: cover; /* Cover the container without distortion */
+    opacity: 1; /* Initially hide images */
+    transition: opacity 0.5s ease-in-out; /* Smooth transition for opacity */
+}
+.carousel-image.active {
+    opacity: 1; /* Show active image */
+}
 
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+.carousel-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
 }
 
 /* .hero-massage{
@@ -788,11 +840,31 @@ body {
 
 @media (max-width: 768px) {
     .navbar {
-        flex-direction: column;
-        height: auto;
+        flex-direction: column; /* Stack items vertically */
+        height: auto; /* Allow height to adjust */
     }
+
+    .nav-search {
+        width: 90%; /* Full width on smaller screens */
+    }
+
     .box {
         width: 90%; /* Full width on smaller screens */
+        margin: 10px auto; /* Center boxes */
+    }
+
+    .shop-section {
+        flex-direction: column; /* Stack boxes vertically */
+        align-items: center; /* Center align boxes */
+    }
+}
+@media (max-width: 480px) {
+    .navbar {
+        font-size: 14px; /* Smaller font size for mobile */
+    }
+
+    .box {
+        width: 100%; /* Full width for mobile */
     }
 }
 
@@ -833,3 +905,34 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
+.profile-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Dropdown Menu Styles */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-top: 8px; /* Space below profile button */
+    border-radius: 8px;
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }

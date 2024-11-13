@@ -88,3 +88,30 @@ filterAndSortTrips();
 //     }
 //   });
 // });
+
+let currentSlide = 0;
+const slides = document.querySelectorAll(".carousel-image");
+
+function showSlide(index) {
+  slides.forEach((slide, i) => {
+    slide.style.display = i === index ? "block" : "none"; // Show the current slide, hide the others
+  });
+}
+
+function changeSlide(n) {
+  currentSlide += n; // Update the current slide index
+  if (currentSlide >= slides.length) {
+    currentSlide = 0; // Wrap around to the first slide
+  } else if (currentSlide < 0) {
+    currentSlide = slides.length - 1; // Wrap around to the last slide
+  }
+  showSlide(currentSlide); // Show the updated slide
+}
+
+// Initialize the carousel by displaying the first slide
+showSlide(currentSlide);
+
+// Optional: If you want the slideshow to change automatically, uncomment the below code
+setInterval(() => {
+  changeSlide(1); // Automatically change to the next slide every 5 seconds
+}, 2000);

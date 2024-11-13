@@ -103,6 +103,9 @@ def register():
         gender = data.get('gender')
         aboutme = data.get('aboutme')
 
+        if len(firstname)<3:
+            return jsonify({'error': 'Name should be at least 3 characters long'}), 400
+        
         if not all([name, email, password, firstname, lastname, phone, dob, gender, aboutme]):
             return jsonify({'error': 'All fields are required'}), 400
 

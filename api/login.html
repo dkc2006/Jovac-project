@@ -164,10 +164,10 @@
 
             // If login is successful, alert the user or redirect
             alert("Login successful");
-            console.log(result.token); // Store the token if needed
+            localStorage.setItem("token", result.token); // Store the token if needed
 
             // Redirect to index.html after successful login
-            window.location.href = "../index.html"; // Change to the path of your index file
+            window.location.href = "../index.html";
           } catch (error) {
             console.error("Error:", error);
             alert("An error occurred. Please try again.");
