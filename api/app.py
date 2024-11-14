@@ -5,6 +5,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from bson import ObjectId
 from flask_cors import CORS  # Import CORS
+from flask import request, jsonify
+from functools import wraps
+import jwt
+from bson import ObjectId
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes and origins
@@ -122,6 +126,36 @@ def register():
 @app.route('/register', methods=['GET'])
 def render_register():
     return render_template('register.html')
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({'error': 'Token is missing!'}), 401
+
+        try:
+            token = token.split(" ")[1]  # Extract token after "Bearer "
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+            current_user = mongo.db.users.find_one({"_id": ObjectId(data['user_id'])})
+            if not current_user:
+                return jsonify({'error': 'User not found!'}), 401
+        except jwt.ExpiredSignatureError:
+            return jsonify({'error': 'Token has expired!'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'error': 'Invalid token!'}), 401
+
+        return f(current_user, *args, **kwargs)
+    return decorated
+
+@app.route('/api/profile', methods=['GET'])
+@token_required
+def profile(current_user):
+    user_data = {
+        "name": current_user['name'],
+        "email": current_user['email']
+    }
+    return jsonify(user_data), 200
 
 
 if __name__ == "__main__":
