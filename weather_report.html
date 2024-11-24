@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Report</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            color: #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: translateY(-10px);
+        }
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .weather-info {
+            margin-top: 30px;
+            font-size: 18px;
+            color: #555;
+        }
+        .weather-info h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #00aaff;
+            font-weight: 700;
+        }
+        .weather-info p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .weather-info .temp {
+            font-size: 36px;
+            font-weight: 600;
+            color: #ff5722;
+        }
+        .weather-info .condition {
+            font-size: 20px;
+            font-style: italic;
+            color: #333;
+        }
+        .error-message {
+            color: #d9534f;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 30px;
+        }
+        .loading {
+            color: #00bcd4;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .icon {
+            font-size: 100px;
+            margin-top: 20px;
+            color: #ff9800;
+        }
+        .button-container {
+            margin-top: 30px;
+        }
+        .back-button {
+            padding: 12px 20px;
+            background-color: #00bcd4;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+        .back-button:hover {
+            background-color: #0097a7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Report</h1>
+        <div id="weather-info" class="weather-info"></div>
+        <div id="error-message" class="error-message"></div>
+        <div id="loading" class="loading"></div>
+        <div class="button-container">
+            <button class="back-button" onclick="window.history.back()">Go Back</button>
+        </div>
+    </div>
+
+    <script>
+       
+        const urlParams = new URLSearchParams(window.location.search);
+        const city = urlParams.get('city');
+
+        document.getElementById('loading').innerText = "Loading weather data...";
+
+        if (city) {
+            fetch(`http://127.0.0.1:5000/weather-report?city=${encodeURIComponent(city)}`)
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    document.getElementById('loading').style.display = "none";
+
+                    if (data.city) {
+                        document.getElementById('weather-info').innerHTML = `
+                            <h3>Weather in ${data.city}</h3>
+                            <div class="temp">${data.temperature}°C</div>
+                            <div class="condition">${data.description}</div>
+                            <p>Humidity: ${data.humidity}%</p>
+                            <p>Wind Speed: ${data.wind_speed} m/s</p>
+                            <i class="icon">🌤️</i>
+                        `;
+                    } else {
+                        document.getElementById('error-message').innerHTML = `<p>${data.error}</p>`;
+                    }
+                })
+                .catch(function(error) {
+                    document.getElementById('loading').style.display = "none";
+                    document.getElementById('error-message').innerHTML = `<p>An error occurred while fetching the weather data.</p>`;
+                });
+        } else {
+            document.getElementById('loading').style.display = "none";
+            document.getElementById('error-message').innerHTML = `<p>No city was provided.</p>`;
+        }
+    </script>
+</body>
+</html>

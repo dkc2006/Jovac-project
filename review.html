@@ -1,99 +1,255 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rating Page</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+<link
+  href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+  rel="stylesheet"
+  id="bootstrap-css"
+/>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f7f7f7;
-        font-family: Arial, sans-serif;
-      }
+<style>
+  .form-group {
+    text-align: center;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 350px;
+    margin: auto;
+  }
 
-      .rating-container {
-        text-align: center;
-        background-color: #fff;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
+  .control-label {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+  }
 
-      h1 {
-        margin-bottom: 20px;
-      }
+  .field-label-header {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+  }
 
-      .stars {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-      }
+  .rating-header {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
 
-      .stars input {
-        display: none;
-      }
+  .selected-rating {
+    font-size: 28px;
+    color: #ffd700;
+    font-weight: bold;
+  }
 
-      .stars label {
-        font-size: 40px;
-        color: #ccc;
-        cursor: pointer;
-        transition: color 0.3s;
-      }
+  .btnrating {
+    background-color: #fff;
+    border: 2px solid #ddd;
+    color: #ddd;
+    margin: 0 5px;
+    font-size: 26px;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s, background-color 0.3s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  }
 
-      .stars input:checked ~ label,
-      .stars input:hover ~ label,
-      .stars label:hover ~ label {
-        color: #ffcc00;
-      }
+  .btnrating:hover,
+  .btnrating.active {
+    color: #ffd700;
+    background-color: #ffd700;
+    transform: scale(1.2);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+  }
 
-      .submit-btn {
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #4caf50;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-      }
+  .btnrating.active {
+    animation: pop 0.3s ease;
+  }
 
-      .submit-btn:hover {
-        background-color: #45a049;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="rating-container">
-      <h1>Rate Us</h1>
-      <div class="stars">
-        <input type="radio" id="star5" name="rating" value="5" />
-        <label for="star5" class="star">&#9733;</label>
+  .submit-button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #00a2ff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.3);
+    text-decoration: none;
+  }
 
-        <input type="radio" id="star4" name="rating" value="4" />
-        <label for="star4" class="star">&#9733;</label>
+  .submit-button:hover {
+    background-color: #0056b3;
+    text-decoration: none;
+  }
 
-        <input type="radio" id="star3" name="rating" value="3" />
-        <label for="star3" class="star">&#9733;</label>
+  .submit-button:active {
+    transform: scale(1.1);
+    background-color: #004080;
+    box-shadow: 0px 5px 15px rgba(0, 64, 128, 0.3);
+  }
 
-        <input type="radio" id="star2" name="rating" value="2" />
-        <label for="star2" class="star">&#9733;</label>
+  @keyframes pop {
+    0% {
+      transform: scale(1.1);
+    }
+    50% {
+      transform: scale(1.3);
+    }
+    100% {
+      transform: scale(1.2);
+    }
+  }
 
-        <input type="radio" id="star1" name="rating" value="1" />
-        <label for="star1" class="star">&#9733;</label>
-      </div>
+  #rating-ability-wrapper {
+    height: 90px;
+    max-width: 350px;
+    margin-top: 210px;
+  }
+  .btnrating.active {
+    color: #ffd700;
+    background-color: #fef6e4;
+    transform: scale(1.2);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+  }
+</style>
 
-      <button class="submit-btn">
-        <a href="index.html" style="text-decoration: none">Submit Rating</a>
-      </button>
-    </div>
-  </body>
-</html>
+<link
+  href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  rel="stylesheet"
+  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+  crossorigin="anonymous"
+/>
+<div class="form-group" id="rating-ability-wrapper">
+  <label class="control-label" for="rating">
+    <span class="field-label-header">How would you rate our trip company!</span
+    ><br />
+    <span class="field-label-info"></span>
+    <input
+      type="hidden"
+      id="selected_rating"
+      name="selected_rating"
+      value=""
+      required="required"
+    />
+  </label>
+  <h2 class="bold rating-header" style="">
+    <span class="selected-rating">0</span><small> / 5</small>
+  </h2>
+  <button
+    type="button"
+    class="btnrating btn btn-default btn-lg"
+    data-attr="1"
+    id="rating-star-1"
+  >
+    <i class="fa fa-star" aria-hidden="true"></i>
+  </button>
+  <button
+    type="button"
+    class="btnrating btn btn-default btn-lg"
+    data-attr="2"
+    id="rating-star-2"
+  >
+    <i class="fa fa-star" aria-hidden="true"></i>
+  </button>
+  <button
+    type="button"
+    class="btnrating btn btn-default btn-lg"
+    data-attr="3"
+    id="rating-star-3"
+  >
+    <i class="fa fa-star" aria-hidden="true"></i>
+  </button>
+  <button
+    type="button"
+    class="btnrating btn btn-default btn-lg"
+    data-attr="4"
+    id="rating-star-4"
+  >
+    <i class="fa fa-star" aria-hidden="true"></i>
+  </button>
+  <button
+    type="button"
+    class="btnrating btn btn-default btn-lg"
+    data-attr="5"
+    id="rating-star-5"
+  >
+    <i class="fa fa-star" aria-hidden="true"></i>
+  </button>
+  <button class="submit-button">Submit</button>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const stars = document.querySelectorAll(".btnrating");
+    const selectedRating = document.querySelector(".selected-rating");
+    const selectedRatingInput = document.getElementById("selected_rating");
+
+    stars.forEach((star) => {
+      star.addEventListener("click", function () {
+        const ratingValue = parseInt(this.getAttribute("data-attr"));
+
+        selectedRating.textContent = ratingValue;
+        selectedRatingInput.value = ratingValue;
+
+        stars.forEach((s) => s.classList.remove("active"));
+
+        for (let i = 0; i < ratingValue; i++) {
+          stars[i].classList.add("active");
+        }
+      });
+    });
+
+    // Submit button
+    document
+      .querySelector(".submit-button")
+      .addEventListener("click", async function () {
+        const selectedRatingValue = selectedRatingInput.value;
+        console.log(selectedRatingValue);
+        // Check if a rating is selected
+        if (selectedRatingValue) {
+          const user_id = "some_user_id";
+
+          try {
+            const response = await fetch(
+              "http://127.0.0.1:5000/submit-rating",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  rating: selectedRatingValue,
+                  user_id: user_id,
+                }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (data.message) {
+              alert(data.message);
+              window.location.href = "/";
+              console.log(data.message);
+            } else if (data.error) {
+              alert(data.error);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert(
+              "An error occurred while submitting your rating. Please try again."
+            );
+          }
+        } else {
+          alert("Please select a rating before submitting.");
+        }
+      });
+  });
+</script>
