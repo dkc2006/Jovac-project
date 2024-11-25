@@ -53,42 +53,6 @@ searchInput.addEventListener("input", filterAndSortTrips);
 // Initial sorting on page load
 filterAndSortTrips();
 
-// document.addEventListener("DOMContentLoaded", function () {
-//   // Login Button Interaction
-//   const loginBtn = document.querySelector(".nav-singin p");
-//   const loginModal = document.createElement("div");
-//   loginModal.classList.add("login-modal");
-//   loginModal.innerHTML = `
-//                 <div class="login-modal-content">
-//                     <span class="close" id="closeModal">&times;</span>
-//                     <input type="text" placeholder="Phone number, username, or email">
-//                     <input type="password" placeholder="Password">
-//                     <button class="login-btn">Log in</button>
-//                     <div class="or">OR</div>
-//                     <button class="facebook-login">Log in with Facebook</button>
-//                     <a href="#" class="forgot-password">Forgot password?</a>
-//                     <div class="signup-section">
-//                         <span>Don't have an account?</span> <a href="./register.html" class="signup-link">Sign up</a>
-//                     </div>
-//                 </div>
-//             `;
-//   document.body.appendChild(loginModal);
-
-//   loginBtn.addEventListener("click", function () {
-//     loginModal.style.display = "flex";
-//   });
-
-//   document.getElementById("closeModal").addEventListener("click", function () {
-//     loginModal.style.display = "none";
-//   });
-
-//   window.addEventListener("click", function (event) {
-//     if (event.target == loginModal) {
-//       loginModal.style.display = "none";
-//     }
-//   });
-// });
-
 let currentSlide = 0;
 const slides = document.querySelectorAll(".carousel-image");
 
